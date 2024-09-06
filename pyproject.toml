@@ -1,38 +1,46 @@
-[tool.poetry]
+[project]
 name = "innertube"
-version = "2.1.17"
+version = "3.0.0"
 description = "Python Client for Google's Private InnerTube API. Works with Youtube, YouTube Music and more!"
-authors = ["Tom Bulled <26026015+tombulled@users.noreply.github.com>"]
+authors = [
+    { name = "Tom Bulled", email = "26026015+tombulled@users.noreply.github.com" },
+    { name = "Artem Khodakov", email = "artem.khodakov.workbox@gmail.com" }
+]
 license = "MIT"
-readme = "README.md"
 homepage = "https://pypi.org/project/innertube/"
 repository = "https://github.com/tombulled/innertube"
 keywords = ["innertube", "youtube", "youtubei", "python", "api", "client"]
-
-[tool.poetry.dependencies]
-python = "^3.8"
-httpx = "^0.23.3"
-mediate = "^0.1.2"
-
-[tool.poetry.dev-dependencies]
-black = "^22.1.0"
-mypy = "^0.941"
-pytest = "^7.1.1"
-Flask = "^2.1.2"
-
-[tool.poetry.group.dev.dependencies]
-fastapi = "^0.111.0"
-pytest-asyncio = "^0.23.6"
+readme = "README.md"
+dependencies = [
+    "httpx>=0.27.2",
+    "mediate>=0.1.8",
+]
+requires-python = ">= 3.9"
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
-[tool.mypy]
-check_untyped_defs = true
-ignore_missing_imports = true
-show_error_codes = true
-warn_redundant_casts = true
-warn_unused_configs = true
-warn_unused_ignores = true
-exclude = ["examples/"]
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "ruff>=0.6.4",
+    "pytest>=8.3.2",
+    "pytest-asyncio>=0.24.0",
+    "fastapi>=0.113.0",
+    "flask>=3.0.3",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["innertube"]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--verbose"
+testpaths = ["tests"]
+filterwarnings = []
+asyncio_mode = "auto"
+pythonpath = ["."]
