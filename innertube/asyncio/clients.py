@@ -3,7 +3,6 @@ from typing import List, Optional, Coroutine
 
 import httpx
 import mediate
-from httpx._types import ProxiesTypes
 
 from innertube import api, utils
 from .adaptor import AsyncInnerTubeAdaptor
@@ -52,7 +51,7 @@ class InnerTube(AsyncClient):
         referer: Optional[str] = None,
         locale: Optional[Locale] = None,
         auto: bool = True,
-        proxies: Optional[ProxiesTypes] = None,
+        client: Optional[httpx.AsyncClient] = None
     ) -> None:
         if client_name is None:
             raise ValueError("Precondition failed: Missing client name")
@@ -79,10 +78,13 @@ class InnerTube(AsyncClient):
 
             context = ClientContext(**kwargs)
 
+        if client is None:
+            client = httpx.AsyncClient(base_url=config.base_url),
+
         super().__init__(
             adaptor=AsyncInnerTubeAdaptor(
                 context=context,
-                session=httpx.AsyncClient(base_url=config.base_url, proxies=proxies),
+                session=client,
             ),
         )
 
